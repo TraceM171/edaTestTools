@@ -1,4 +1,4 @@
-package ipclabtestseditor;
+package labtestseditor;
 
 import java.util.List;
 import javafx.application.Application;

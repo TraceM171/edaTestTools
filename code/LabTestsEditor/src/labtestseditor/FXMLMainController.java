@@ -1,14 +1,14 @@
-package ipclabtestseditor;
+package labtestseditor;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -24,15 +24,15 @@ import javafx.scene.control.TextArea;
  */
 public class FXMLMainController implements Initializable {
 
-    private static final int SECRET_OBJ_LENGTH = 19;
+    private static final int MAX_OBJ_LENGTH = 100;
 
     private static Object[] getObjsFromFile(File f)
             throws IOException, ClassNotFoundException {
 
-        Object[] objs = new Object[SECRET_OBJ_LENGTH];
+        Object[] objs = new Object[MAX_OBJ_LENGTH];
         FileInputStream fis = new FileInputStream(f);
         try (ObjectInputStream ois = new ObjectInputStream(fis)) {
-            for (int i = 0; i < SECRET_OBJ_LENGTH; i++) {
+            for (int i = 0; fis.available() > 0; i++) {
                 objs[i] = ois.readObject();
             }
         }
@@ -43,8 +43,8 @@ public class FXMLMainController implements Initializable {
     private static String objsToString(Object[] objs) {
 
         StringBuilder builder = new StringBuilder();
-        for (Object o : objs) {
-            builder.append(o);
+        for (int i = 0; i < objs.length && objs[i] != null; i++) {
+            builder.append(objs[i]);
             builder.append("_");
         }
         return builder.toString();
@@ -53,7 +53,7 @@ public class FXMLMainController implements Initializable {
 
     private static void updateObjsFromString(Object[] ref, String text) {
         String[] splitted = text.split("_");
-        for (int i = 0; i < ref.length; i++) {
+        for (int i = 0; i < ref.length && ref[i] != null; i++) {
             Object nO = null;
             switch (ref[i].getClass().getName()) {
                 case "java.lang.String":
@@ -69,10 +69,19 @@ public class FXMLMainController implements Initializable {
                     nO = Instant.parse(splitted[i]);
                     break;
                 default:
-                    System.out.println("ERROR!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                    System.out.println("ERROR!");
             }
             if (nO != null && !ref[i].equals(nO)) {
                 ref[i] = nO;
+            }
+        }
+    }
+
+    private static void writeObjsToFile(Object[] objs, File f)
+            throws IOException, FileNotFoundException {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));) {
+            for (int i = 0; i < objs.length && objs[i] != null; i++) {
+                oos.writeObject(objs[i]);
             }
         }
     }
@@ -89,27 +98,9 @@ public class FXMLMainController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         Platform.runLater(() -> {
             inputFile = new File(INPUT_FILE_PATH);
-
-            try {
-
-                objs = getObjsFromFile(inputFile);
-                text_box.setText(objsToString(objs));
-
-            } catch (IOException | ClassNotFoundException ex) {
-                Logger.getLogger(FXMLMainController.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            loadFileToTextArea();
         });
 
-    }
-
-    private void writeObjs() {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(inputFile));) {
-            for (Object o : objs) {
-                oos.writeObject(o);
-            }
-        } catch (IOException ex) {
-            Logger.getLogger(FXMLMainController.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     void setFilePath(String filePath) {
@@ -119,11 +110,40 @@ public class FXMLMainController implements Initializable {
     @FXML
     private void saveAction(ActionEvent event) {
         updateObjsFromString(objs, text_box.getText());
-        writeObjs();
+        try {
+            writeObjsToFile(objs, inputFile);
+        } catch (IOException ex) {
+             System.err.println("Cannot write file at specified path!");
+            exit();
+        }
     }
 
     @FXML
     private void cancelAction(ActionEvent event) {
+        exit();
+    }
+
+    @FXML
+    private void restoreAction(ActionEvent event) {
+        loadFileToTextArea();
+    }
+    
+    private void loadFileToTextArea() {
+        try {
+            objs = getObjsFromFile(inputFile);
+            text_box.setText(objsToString(objs));
+        } catch (IOException e) {
+            System.err.println("Cannot read file at specified path!");
+            exit();
+        } catch (ClassNotFoundException e) {
+            System.err.println("Specified file is not valid!");
+            exit();
+        }
+    }
+    
+    private static void exit() {
+        Platform.exit();
+        System.exit(0);
     }
 
 }
