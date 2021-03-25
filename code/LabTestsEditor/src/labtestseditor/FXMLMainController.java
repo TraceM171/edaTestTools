@@ -10,8 +10,6 @@ import java.io.ObjectOutputStream;
 import java.net.URL;
 import java.time.Instant;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,6 +23,7 @@ import javafx.scene.control.TextArea;
 public class FXMLMainController implements Initializable {
 
     private static final int MAX_OBJ_LENGTH = 100;
+    private static final String DELIMITER = "‖";
 
     private static Object[] getObjsFromFile(File f)
             throws IOException, ClassNotFoundException {
@@ -45,14 +44,14 @@ public class FXMLMainController implements Initializable {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < objs.length && objs[i] != null; i++) {
             builder.append(objs[i]);
-            builder.append("_");
+            builder.append(DELIMITER);
         }
         return builder.toString();
 
     }
 
     private static void updateObjsFromString(Object[] ref, String text) {
-        String[] splitted = text.split("_");
+        String[] splitted = text.split(DELIMITER);
         for (int i = 0; i < ref.length && ref[i] != null; i++) {
             Object nO = null;
             switch (ref[i].getClass().getName()) {
