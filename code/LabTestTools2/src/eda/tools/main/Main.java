@@ -1,6 +1,7 @@
 package eda.tools.main;
 
 import eda.testtools.decompiler.Decompiler;
+import eda.testtools.inspector.Inspector;
 import eda.testtools.resulteditor.ResultEditor;
 import java.util.Arrays;
 
@@ -26,6 +27,10 @@ public class Main {
                 case "decompile":
                 case "d":
                     Decompiler.init(nArgs);
+                    break;
+                case "inspect":
+                case "i":
+                    Inspector.init(nArgs);
                     break;
                 case "help":
                 case "h":

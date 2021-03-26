@@ -1,6 +1,7 @@
 package eda.testtools.resulteditor;
 
 import eda.testtools.util.SysUtils;
+import eda.tools.main.Constants;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -23,13 +24,10 @@ import javafx.scene.control.TextArea;
  */
 public class FXMLMainController implements Initializable {
 
-    private static final int MAX_OBJ_LENGTH = 100;
-    private static final String DELIMITER = "‖";
-
     private static Object[] getObjsFromFile(File f)
             throws IOException, ClassNotFoundException {
 
-        Object[] objs = new Object[MAX_OBJ_LENGTH];
+        Object[] objs = new Object[Constants.MAX_RESULT_OBJ_LENGTH];
         FileInputStream fis = new FileInputStream(f);
         try (ObjectInputStream ois = new ObjectInputStream(fis)) {
             for (int i = 0; fis.available() > 0; i++) {
@@ -45,14 +43,14 @@ public class FXMLMainController implements Initializable {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < objs.length && objs[i] != null; i++) {
             builder.append(objs[i]);
-            builder.append(DELIMITER);
+            builder.append(Constants.INSPECTOR_DELIMITER);
         }
         return builder.toString();
 
     }
 
     private static void updateObjsFromString(Object[] ref, String text) {
-        String[] splitted = text.split(DELIMITER);
+        String[] splitted = text.split(Constants.INSPECTOR_DELIMITER);
         for (int i = 0; i < ref.length && ref[i] != null; i++) {
             Object nO = null;
             switch (ref[i].getClass().getName()) {

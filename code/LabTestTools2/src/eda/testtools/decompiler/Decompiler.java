@@ -18,7 +18,7 @@ import org.benf.cfr.reader.api.CfrDriver;
  */
 public class Decompiler {
 
-    private static void decompile(String inPath, String outPath)
+    public static void decompile(String inPath, String outPath)
             throws IOException {
         String tmp = Files.createTempDirectory(null).toString();
 
@@ -36,15 +36,24 @@ public class Decompiler {
     public static void init(String[] args) {
         String inPath = args.length > 0 && Files.exists(Paths.get(args[0]))
                 ? args[0] : "./";
+        File inputFile = FileUtils.findFileWithSuffix(inPath,
+                Constants.LAB_TESTS_CLASS_NAME);
+        if (inputFile == null) {
+            System.out.println("Could not find a file to decompile!");
+            System.exit(0);
+        }
+        inPath = inputFile.getPath();
+        System.out.println("Using " + inPath + " as input file.");
+        
         String outPath = args.length > 1
                 ? args[1] : Constants.LAB_TESTS_GENERATED_JAVA_NAME;
-        inPath = FileUtils.findFileWithSuffix(inPath,
-                Constants.LAB_TESTS_CLASS_NAME).getPath();
+        
+        System.out.println("Using " + outPath + " as output file.");
 
         try {
             decompile(inPath, outPath);
         } catch (IOException e) {
-            System.out.println("Error creating a temporal file!");
+            System.out.println("Error writing to file!");
             System.exit(1);
         }
     }

@@ -1,8 +1,10 @@
 package eda.testtools.resulteditor;
 
-
 import eda.testtools.util.FileUtils;
+import eda.tools.main.Constants;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,16 +26,20 @@ public class ResultEditor extends Application {
 
         final Parameters params = getParameters();
         final List<String> parameters = params.getRaw();
-        final String filePath = !parameters.isEmpty() ? parameters.get(0) : null;
-
-        if (filePath == null) {
-            System.out.println("You must specify a file path!");
+        
+        String filePath = parameters.size() > 0
+                && Files.exists(Paths.get(parameters.get(0)))
+                ? parameters.get(0) : "./";
+        File inputFile = FileUtils.findFileWithSuffix(filePath,
+                Constants.LAB_TESTS_RESULT_SUFFIX);
+        if (inputFile == null) {
+            System.out.println("Could not find a file to edit!");
             System.exit(0);
         }
-        if (!FileUtils.isValidFile(filePath)) {
-            System.err.println("Specified file is not valid!");
-            System.exit(0);
-        }
+        filePath = inputFile.getPath();
+        System.out.println("Using " + filePath + " as input file.");
+        
+        
         cont.setFilePath(filePath);
 
         Scene scene = new Scene(root);
