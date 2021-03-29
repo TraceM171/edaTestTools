@@ -6,12 +6,12 @@ import java.io.FileReader
 
 object FileUtils {
 
-    /*fun findFirstRegularFile(node: File): File? =
+    fun findFirstRegularFile(node: File): File? =
         if (node.isFile) {
             node
         } else {
             node.listFiles()?.let { findFirstRegularFile(it[0]) }
-        }*/
+        }
 
     fun findFileWithSuffix(where: String, suffix: String): File? =
         File(where).run {

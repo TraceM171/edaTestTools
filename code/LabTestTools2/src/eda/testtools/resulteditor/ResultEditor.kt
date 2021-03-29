@@ -25,7 +25,7 @@ class ResultEditor : Application() {
             parameters!!.get(0)
         else
             "./"
-        val inputFile = FileUtils.findFileWithSuffix(filePath,
+        val inputFile = FileUtils.z(filePath,
                 Constants.LAB_TESTS_RESULT_SUFFIX)
         if (inputFile == null) {
             System.out.println("Could not find a file to edit!")

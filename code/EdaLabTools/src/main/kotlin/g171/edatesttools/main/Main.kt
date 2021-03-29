@@ -1,5 +1,6 @@
 package g171.edatesttools.main
 
+import g171.edatesttools.decompiler.Decompiler
 import g171.edatesttools.resulteditor.ResultEditor
 import kotlin.system.exitProcess
 
@@ -15,7 +16,7 @@ object Main {
             val nArgs = args.copyOfRange(1, args.size)
             when (args[0]) {
                 "edit-result", "er" -> ResultEditor.main(nArgs)
-                //"decompile", "d" -> Decompiler.init(nArgs)
+                "decompile", "d" -> Decompiler.main(nArgs)
                 //"inspect", "i" -> Inspector.init(nArgs)
                 "help", "h" -> printHelp()
                 else -> invalidInput()

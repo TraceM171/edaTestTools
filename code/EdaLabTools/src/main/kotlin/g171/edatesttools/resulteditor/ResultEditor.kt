@@ -29,7 +29,7 @@ class ResultEditor : Application() {
         }
         filePath = inputFile.path
         println("Using $filePath as input file.")
-        (loader.getController() as FXMLMainController).setFilePath(filePath)
+        (loader.getController() as ResultEditorController).setFilePath(filePath)
         stage.scene = Scene(root)
         stage.show()
     }

@@ -10,12 +10,13 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test-junit"))
+    implementation ("org.benf:cfr:0.151")
 }
 
 tasks.test {
     useJUnit()
 }
 
-tasks.withType<KotlinCompile>() {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }

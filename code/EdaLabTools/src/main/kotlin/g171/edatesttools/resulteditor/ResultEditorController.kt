@@ -3,7 +3,6 @@ package g171.edatesttools.resulteditor
 import g171.edatesttools.main.INSPECTOR_DELIMITER
 import g171.edatesttools.util.SysUtils.exitFX
 import javafx.application.Platform
-import javafx.event.ActionEvent
 import javafx.fxml.FXML
 import javafx.fxml.Initializable
 import javafx.scene.control.TextArea
@@ -13,7 +12,7 @@ import java.time.Instant
 import java.util.*
 import kotlin.collections.ArrayList
 
-class FXMLMainController : Initializable {
+class ResultEditorController : Initializable {
     private fun getObjsFromFile(f: File): MutableList<Any> {
         val objs = ArrayList<Any>()
         val fis = FileInputStream(f)
@@ -71,6 +70,7 @@ class FXMLMainController : Initializable {
         updateObjsFromString(objs, textBox.text)
         try {
             writeObjsToFile(objs, inputFile)
+            println("File saved to $inputFilePath")
         } catch (e: IOException) {
             System.err.println("Cannot write file at specified path!")
             exitFX(1)
@@ -85,7 +85,10 @@ class FXMLMainController : Initializable {
 
     private fun loadFileToTextArea() =
         try {
-            textBox.text = objsToString(getObjsFromFile(inputFile))
+            getObjsFromFile(inputFile).also {
+                objs = it
+                textBox.text = objsToString(it)
+            }
         } catch (e: IOException) {
             System.err.println("Cannot read file at specified path!")
             exitFX(1)
