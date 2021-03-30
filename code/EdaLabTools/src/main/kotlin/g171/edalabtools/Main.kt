@@ -1,7 +1,7 @@
-package g171.edatesttools.main
+package g171.edalabtools
 
-import g171.edatesttools.decompiler.Decompiler
-import g171.edatesttools.resulteditor.ResultEditor
+import g171.edalabtools.decompiler.Decompiler
+import g171.edalabtools.resulteditor.ResultEditor
 import kotlin.system.exitProcess
 
 

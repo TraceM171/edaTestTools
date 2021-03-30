@@ -1,7 +1,7 @@
-package g171.edatesttools.resulteditor
+package g171.edalabtools.resulteditor
 
-import g171.edatesttools.main.INSPECTOR_DELIMITER
-import g171.edatesttools.util.SysUtils.exitFX
+import g171.edalabtools.INSPECTOR_DELIMITER
+import g171.edalabtools.util.SysUtils.exitFX
 import javafx.application.Platform
 import javafx.fxml.FXML
 import javafx.fxml.Initializable

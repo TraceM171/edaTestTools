@@ -1,7 +1,7 @@
-package g171.edatesttools.resulteditor
+package g171.edalabtools.resulteditor
 
-import g171.edatesttools.main.LAB_TESTS_RESULT_SUFFIX
-import g171.edatesttools.util.FileUtils
+import g171.edalabtools.LAB_TESTS_RESULT_SUFFIX
+import g171.edalabtools.util.FileUtils
 import javafx.application.Application
 import javafx.fxml.FXMLLoader
 import javafx.scene.Parent
@@ -13,8 +13,7 @@ import kotlin.system.exitProcess
 
 class ResultEditor : Application() {
     override fun start(stage: Stage) {
-        val aaa = javaClass.getResource("/result_editor.fxml")
-        val loader = FXMLLoader(aaa)
+        val loader = FXMLLoader(javaClass.getResource("/result_editor.fxml"))
         val root: Parent = loader.load()
         val params = parameters
         val parameters = params.raw

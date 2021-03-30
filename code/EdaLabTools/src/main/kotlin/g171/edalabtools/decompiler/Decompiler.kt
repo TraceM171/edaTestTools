@@ -1,9 +1,9 @@
-package g171.edatesttools.decompiler
+package g171.edalabtools.decompiler
 
-import g171.edatesttools.main.LAB_TESTS_CLASS_NAME
-import g171.edatesttools.main.LAB_TESTS_GENERATED_JAVA_NAME
-import g171.edatesttools.util.FileUtils
-import g171.edatesttools.util.FileUtils.findFileWithSuffix
+import g171.edalabtools.LAB_TESTS_CLASS_NAME
+import g171.edalabtools.LAB_TESTS_GENERATED_JAVA_NAME
+import g171.edalabtools.util.FileUtils
+import g171.edalabtools.util.FileUtils.findFileWithSuffix
 import org.benf.cfr.reader.api.CfrDriver
 import java.io.File
 import java.io.IOException

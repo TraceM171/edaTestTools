@@ -1,4 +1,4 @@
-package g171.edatesttools.util
+package g171.edalabtools.util
 
 import javafx.application.Platform
 import java.net.InetAddress
