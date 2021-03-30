@@ -13,7 +13,7 @@ import java.nio.file.StandardCopyOption
 import kotlin.system.exitProcess
 
 object Decompiler {
-    fun decompile(inPath: String, outPath: String) {
+    internal fun decompile(inPath: String, outPath: String) {
         val tmp = Files.createTempDirectory(null).toString()
         CfrDriver.Builder()
             .withOptions(mapOf("outputpath" to tmp)).build()

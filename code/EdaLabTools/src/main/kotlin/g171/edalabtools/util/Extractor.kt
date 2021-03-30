@@ -3,14 +3,13 @@ package g171.edalabtools.util
 import g171.edalabtools.model.FormatException
 import g171.edalabtools.model.IndexedResult
 import g171.edalabtools.model.LabTestInfo
-import g171.edalabtools.util.FileUtils.cToString
 import org.apache.commons.lang.StringEscapeUtils
 import java.io.File
 
-class Extractor(private val inputPath: String, private val force: Boolean) {
+class Extractor(private val inputPath: String, private val force: Boolean = false) {
 
     // Here comes the pain
-    fun extract(): LabTestInfo =
+    internal fun extract(): LabTestInfo =
         File(inputPath).run {
             val path = getStrBwDelimsNonNull("File eixida = new File(\"", "\");", "eixida")
             LabTestInfo(
@@ -42,7 +41,7 @@ class Extractor(private val inputPath: String, private val force: Boolean) {
 
     private fun File.getStrBwDelims(delim1: String, delim2: String, fromIndex: Int)
             : IndexedResult<String>? =
-        cToString().let {
+        readText().let {
             val index = it.indexOf(delim1, fromIndex)
             if (index == -1) return null
             val s1 = it.substring(index + delim1.length)

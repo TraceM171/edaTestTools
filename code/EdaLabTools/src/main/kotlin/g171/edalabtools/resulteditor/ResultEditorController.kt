@@ -58,7 +58,7 @@ class ResultEditorController : Initializable {
     @FXML
     private lateinit var textBox: TextArea
 
-    override fun initialize(url: URL, rb: ResourceBundle?) = Platform.runLater {
+    override fun initialize(url: URL?, rb: ResourceBundle?) = Platform.runLater {
         inputFile = File(inputFilePath)
         loadFileToTextArea()
     }

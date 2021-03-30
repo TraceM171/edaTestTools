@@ -7,13 +7,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 internal class ExtractorTest {
-    private lateinit var testFilePath: String
 
-    @BeforeTest
-    fun initExtractor() {
-        testFilePath = javaClass.getResource("/LabTests/java/LabTests.java").path
-    }
-
+    private val testFilePath = javaClass.getResource("/LabTests/java/LabTests.java").path
 
     @Test
     fun `Extract info from a LabTests class file and return the corresponding LabTestsInfo Object`() {
@@ -39,8 +34,8 @@ internal class ExtractorTest {
             NOM_PRACT = arrayOf("Práctica ", "Lab "),
             EJER_PRACT = arrayOf(1, 1, 1),
             EJER_PUNTOS = arrayOf(5.0E-4, 0.1, 0.212),
-            path = "./aplicaciones/primitiva/Practica1.LabTests",
-            absPath = File("./aplicaciones/primitiva/Practica1.LabTests").absolutePath
+            path = "./aplicaciones/primitiva/Practica.LabTests",
+            absPath = File("./aplicaciones/primitiva/Practica.LabTests").absolutePath
         )
         assertEquals(expectedLabTestInfo, extractor.extract())
     }

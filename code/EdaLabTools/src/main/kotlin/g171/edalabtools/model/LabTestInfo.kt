@@ -1,6 +1,7 @@
 package g171.edalabtools.model
 
 import g171.edalabtools.util.SysUtils
+import java.time.Instant
 
 data class LabTestInfo(
     // Extracted
@@ -26,10 +27,13 @@ data class LabTestInfo(
     val EJER_PUNTOS: Array<Double>,
     val path: String,
     val absPath: String,
+
     // Derived
-    val alumno: String = SysUtils.hostName,
+    val alumno: String = SysUtils.userName,
     val pc: String = SysUtils.hostName,
-    ) {
+    val notaLabTests: Double = EJER_PUNTOS.sum(),
+    val ahora: Instant = Instant.ofEpochMilli(System.currentTimeMillis() + 3600000L),
+) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
@@ -91,4 +95,33 @@ data class LabTestInfo(
         result = 31 * result + pc.hashCode()
         return result
     }
+
+    fun toFormattedString(): String =
+        """
+            verb=$verb,
+            CAS=$CAS,
+            ENG=$ENG,
+            turno=$turno,
+            lang=$lang,
+            TIME_OUT=$TIME_OUT,
+            MIN_NOTA=$MIN_NOTA,
+            CAP=${CAP.contentToString()},
+            LIN='$LIN',
+            ALUM=${ALUM.contentToString()},
+            ENTREGA=${ENTREGA.contentToString()},
+            PRUEBA=${PRUEBA.contentToString()},
+            NO_AUT=${NO_AUT.contentToString()},
+            EXC_TM=${EXC_TM.contentToString()},
+            EXC=${EXC.contentToString()},
+            ERR=${ERR.contentToString()},
+            NO_METHOD=${NO_METHOD.contentToString()},
+            NOM_PRACT=${NOM_PRACT.contentToString()},
+            EJER_PRACT=${EJER_PRACT.contentToString()},
+            EJER_PUNTOS=${EJER_PUNTOS.contentToString()},
+            path='$path',
+            absPath='$absPath',
+            alumno='$alumno',
+            pc='$pc')
+        """
+
 }

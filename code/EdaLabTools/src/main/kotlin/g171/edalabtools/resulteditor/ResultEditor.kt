@@ -15,10 +15,9 @@ class ResultEditor : Application() {
     override fun start(stage: Stage) {
         val loader = FXMLLoader(javaClass.getResource("/result_editor.fxml"))
         val root: Parent = loader.load()
-        val params = parameters
-        val parameters = params.raw
-        var filePath = if (parameters.size > 0 && Files.exists(Paths.get(parameters[0])))
-            parameters[0]
+        val params = parameters.raw
+        var filePath = if (params.size > 0 && Files.exists(Paths.get(params[0])))
+            params[0]
         else
             "./"
         val inputFile = FileUtils.findFileWithSuffix(filePath, LAB_TESTS_RESULT_SUFFIX)
