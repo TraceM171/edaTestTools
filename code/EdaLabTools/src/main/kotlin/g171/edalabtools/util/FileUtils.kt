@@ -11,10 +11,4 @@ object FileUtils {
             node.listFiles()?.let { findFirstRegularFile(it[0]) }
         }
 
-    fun findFileWithSuffix(where: String, suffix: String): File? =
-        File(where).run {
-            if (isFile) this
-            else listFiles()?.firstOrNull { file -> file.name.endsWith(suffix) }
-        }
-
 }

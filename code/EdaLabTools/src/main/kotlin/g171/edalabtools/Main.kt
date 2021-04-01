@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.options.versionOption
 import g171.edalabtools.decompiler.Decompiler
 import g171.edalabtools.generator.Generator
 import g171.edalabtools.inspector.Inspector
+import g171.edalabtools.resulteditor.ResultEditor
 
 class EdaLabTools : NoOpCliktCommand(
     name = "elt",
@@ -28,5 +29,5 @@ class EdaLabTools : NoOpCliktCommand(
 }
 
 fun main(args: Array<String>) = EdaLabTools()
-    .subcommands(Decompiler(), Inspector(), Generator())
+    .subcommands(Decompiler(), Inspector(), ResultEditor(), Generator())
     .main(args)

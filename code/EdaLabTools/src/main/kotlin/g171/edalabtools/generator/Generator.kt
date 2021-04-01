@@ -76,7 +76,7 @@ class Generator : CliktCommand(
             )
         }
 
-    internal fun generate(lti: LabTestInfo, outFile: String) {
+    private fun generate(lti: LabTestInfo, outFile: String) {
         lti.run {
             ObjectOutputStream(FileOutputStream(outFile)).run {
                 writeObject("$alumno $pc\n")
