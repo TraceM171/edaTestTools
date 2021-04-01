@@ -1,5 +1,10 @@
 /*
  * Decompiled with CFR 0.151.
+ * 
+ * Could not load the following classes:
+ *  aplicaciones.primitiva.ApuestaPrimitiva
+ *  aplicaciones.primitiva.NumeroPrimitiva
+ *  librerias.estructurasDeDatos.lineales.LEGListaConPIOrdenada
  */
 package aplicaciones.primitiva;
 
@@ -100,7 +105,7 @@ public class LabTests {
             }
         }
         System.out.println();
-        System.out.println("  Si has terminado, sube el fichero \n  Practica.LabTests a PoliformaT\n");
+        System.out.println("  Si has terminado, sube el fichero \n  Practica1.LabTests a PoliformaT\n");
     }
 
     private static double ejer(int ejer, ArrayList<Object> mensaje) {

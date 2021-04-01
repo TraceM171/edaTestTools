@@ -6,7 +6,7 @@ import g171.edalabtools.model.LabTestInfo
 import org.apache.commons.lang.StringEscapeUtils
 import java.io.File
 
-class Extractor(private val inputPath: String, private val force: Boolean = false) {
+class Extractor(private val inputPath: String, private val force: Boolean) {
 
     // Here comes the pain
     internal fun extract(): LabTestInfo =

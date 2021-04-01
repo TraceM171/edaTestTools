@@ -16,4 +16,5 @@ object FileUtils {
             if (isFile) this
             else listFiles()?.firstOrNull { file -> file.name.endsWith(suffix) }
         }
+
 }

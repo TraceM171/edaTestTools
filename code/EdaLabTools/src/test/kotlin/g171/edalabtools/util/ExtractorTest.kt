@@ -2,7 +2,6 @@ package g171.edalabtools.util
 
 import g171.edalabtools.model.LabTestInfo
 import java.io.File
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -34,8 +33,8 @@ internal class ExtractorTest {
             NOM_PRACT = arrayOf("Práctica ", "Lab "),
             EJER_PRACT = arrayOf(1, 1, 1),
             EJER_PUNTOS = arrayOf(5.0E-4, 0.1, 0.212),
-            path = "./aplicaciones/primitiva/Practica.LabTests",
-            absPath = File("./aplicaciones/primitiva/Practica.LabTests").absolutePath
+            path = "./aplicaciones/primitiva/Practica1.LabTests",
+            absPath = File("./aplicaciones/primitiva/Practica1.LabTests").absolutePath
         )
         assertEquals(expectedLabTestInfo, extractor.extract())
     }

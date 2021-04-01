@@ -1,5 +1,8 @@
 package g171.edalabtools
 
+// Software
+const val VERSION_NAME = "0.5"
+
 // General
 const val LAB_TESTS_CLASS_NAME = "LabTests.class"
 const val LAB_TESTS_GENERATED_JAVA_NAME = "LabTests.java"

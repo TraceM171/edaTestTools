@@ -1,37 +1,32 @@
 package g171.edalabtools
 
+import com.github.ajalt.clikt.core.NoOpCliktCommand
+import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.core.subcommands
+import com.github.ajalt.clikt.output.CliktHelpFormatter
+import com.github.ajalt.clikt.parameters.options.versionOption
 import g171.edalabtools.decompiler.Decompiler
-import g171.edalabtools.resulteditor.ResultEditor
-import kotlin.system.exitProcess
+import g171.edalabtools.generator.Generator
+import g171.edalabtools.inspector.Inspector
 
+class EdaLabTools : NoOpCliktCommand(
+    name = "elt",
+    help = """EdaLabTools is a group of command line tools related to
+        EDA laboratory tests, 2nd Course, UPV-Computer Science
 
-object Main {
-    @JvmStatic
-    fun main(args: Array<String>) {
-        javax.swing.SwingUtilities.invokeLater {
-            if (args.isEmpty()) {
-                invalidInput()
-                exitProcess(0)
-            }
-            val nArgs = args.copyOfRange(1, args.size)
-            when (args[0]) {
-                "edit-result", "er" -> ResultEditor.main(nArgs)
-                "decompile", "d" -> Decompiler.main(nArgs)
-                //"inspect", "i" -> Inspector.init(nArgs)
-                "help", "h" -> printHelp()
-                else -> invalidInput()
-            }
-            exitProcess(0)
+        This software is provided as is, without any guarantees"""
+) {
+    init {
+        context {
+            helpFormatter = CliktHelpFormatter(
+                showDefaultValues = true,
+                showRequiredTag = true
+            )
         }
-    }
-
-
-    private fun printHelp() {
-        println("TODO")
-    }
-
-    private fun invalidInput() {
-        println("You must specify an option")
-        println("Use \"edatools help\" (or \"edatools h\") to show all available options.")
+        versionOption(VERSION_NAME)
     }
 }
+
+fun main(args: Array<String>) = EdaLabTools()
+    .subcommands(Decompiler(), Inspector(), Generator())
+    .main(args)

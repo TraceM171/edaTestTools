@@ -1,63 +1,68 @@
 package g171.edalabtools.inspector
 
-import g171.edalabtools.LAB_TESTS_GENERATED_JAVA_NAME
-import g171.edalabtools.LAB_TESTS_JAVA_CLASS_NAME
-import g171.edalabtools.decompiler.Decompiler
-import g171.edalabtools.util.FileUtils
-import javafx.application.Application
-import javafx.fxml.FXMLLoader
-import javafx.scene.Parent
-import javafx.scene.Scene
-import javafx.stage.Stage
+import com.github.ajalt.clikt.core.CliktCommand
+import com.github.ajalt.clikt.core.context
+import com.github.ajalt.clikt.output.CliktHelpFormatter
+import com.github.ajalt.clikt.parameters.arguments.argument
+import com.github.ajalt.clikt.parameters.options.flag
+import com.github.ajalt.clikt.parameters.options.option
+import com.github.ajalt.clikt.parameters.options.validate
+import com.github.ajalt.clikt.parameters.types.file
+import g171.edalabtools.decompiler.decompile
+import g171.edalabtools.util.Extractor
+import java.io.File
 import java.nio.file.Files
-import java.nio.file.Paths
-import kotlin.system.exitProcess
 
-class Inspector : Application() {
-    override fun start(stage: Stage) {
-        val loader = FXMLLoader(javaClass.getResource("/inspector.fxml"))
-        val root: Parent = loader.load()
-        val params = parameters.raw
-        val inspectorController = (loader.getController() as InspectorController)
+class Inspector : CliktCommand(
+    name = "inspect",
+    help = "Inspect the values stored inside a LabTests file, and show them"
+) {
 
-        val decompiled = params.run { size > 0 && (first() == "-d" || first() == "-decompiled") }
-        if (decompiled) params.removeFirst()
+    private val inFile: File by argument(
+        name = "input-file",
+        help = "File to inspect, should end with .class (or a .java file id -d is activated)"
+    ).file(mustExist = true, canBeFile = true, canBeDir = false, mustBeReadable = true)
 
-        var filePath = if (params.size > 0 && Files.exists(Paths.get(params[0])))
-            params[0]
-        else
-            "./"
+    private val decompiled: Boolean by option(
+        "-d", "--decompiled",
+        help = "Use an already decompiled LabTests.java file instead of a LabTests.class"
+    ).flag("--compiled", default = false)
 
-        val inputFile =
-            if (decompiled) FileUtils.findFileWithSuffix(filePath, LAB_TESTS_GENERATED_JAVA_NAME)
-            else FileUtils.findFileWithSuffix(filePath, LAB_TESTS_JAVA_CLASS_NAME)
-        if (inputFile == null) {
-            println("Could not find a file to edit!"); exitProcess(0)
-        }
+    private val force: Boolean by option(
+        "-f", "--force",
+        help = "Always try to finish the extraction, even when some values can't be found in the file, will ignore parse exceptions"
+    ).flag("--no-force", default = false)
+        .validate { if (it) issueMessage("Force flag is activated, use with caution, expect errors") }
 
-        filePath = inputFile.path
-        println("Using $filePath as input file.")
+    private val raw: Boolean by option(
+        "-r", "--raw",
+        help = "Show extracted information in a raw format, will show everything found without any explanation"
+    ).flag("--no-force", default = false)
 
-        val force = params.getOrNull(1) == "-f" || params.getOrNull(1) == "-force"
-
-        inspectorController.init(
-            filePath,
-            if (!decompiled) {
-                val decompPath = Files.createTempFile(null, null).toString()
-                Decompiler.decompile(filePath, decompPath)
-                decompPath
-            } else filePath,
-            force
-        )
-
-        stage.scene = Scene(root)
-        stage.show()
-    }
-
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            launch(Inspector::class.java, *args)
+    init {
+        context {
+            helpFormatter = CliktHelpFormatter(
+                showDefaultValues = true,
+                showRequiredTag = true
+            )
         }
     }
+
+    override fun run() {
+        val decompiledPath: String =
+            if (decompiled) inFile.path
+            else {
+                (Files.createTempFile("inspector", null).apply {
+                    decompile(inFile.path, toString())
+                }).toString()
+            }
+
+        Extractor(decompiledPath, force).extract().run {
+            echo(
+                if (raw) toRawString()
+                else toDataString()
+            )
+        }
+    }
+
 }

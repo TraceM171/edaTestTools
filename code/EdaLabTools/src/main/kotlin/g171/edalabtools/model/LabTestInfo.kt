@@ -1,6 +1,7 @@
 package g171.edalabtools.model
 
 import g171.edalabtools.util.SysUtils
+import java.io.File
 import java.time.Instant
 
 data class LabTestInfo(
@@ -27,8 +28,8 @@ data class LabTestInfo(
     val EJER_PUNTOS: Array<Double>,
     val path: String,
     val absPath: String,
-
     // Derived
+    val fileName: String = File(path).name,
     val alumno: String = SysUtils.userName,
     val pc: String = SysUtils.hostName,
     val notaLabTests: Double = EJER_PUNTOS.sum(),
@@ -96,32 +97,66 @@ data class LabTestInfo(
         return result
     }
 
-    fun toFormattedString(): String =
+    fun toRawString(): String =
         """
-            verb=$verb,
-            CAS=$CAS,
-            ENG=$ENG,
-            turno=$turno,
-            lang=$lang,
-            TIME_OUT=$TIME_OUT,
-            MIN_NOTA=$MIN_NOTA,
-            CAP=${CAP.contentToString()},
-            LIN='$LIN',
-            ALUM=${ALUM.contentToString()},
-            ENTREGA=${ENTREGA.contentToString()},
-            PRUEBA=${PRUEBA.contentToString()},
-            NO_AUT=${NO_AUT.contentToString()},
-            EXC_TM=${EXC_TM.contentToString()},
-            EXC=${EXC.contentToString()},
-            ERR=${ERR.contentToString()},
-            NO_METHOD=${NO_METHOD.contentToString()},
-            NOM_PRACT=${NOM_PRACT.contentToString()},
-            EJER_PRACT=${EJER_PRACT.contentToString()},
-            EJER_PUNTOS=${EJER_PUNTOS.contentToString()},
-            path='$path',
-            absPath='$absPath',
-            alumno='$alumno',
-            pc='$pc')
-        """
+            verb = $verb
+            CAS = $CAS
+            ENG = $ENG
+            turno = $turno
+            lang = $lang
+            TIME_OUT = $TIME_OUT
+            MIN_NOTA = $MIN_NOTA
+            CAP = ${CAP.contentToString()}
+            LIN = $LIN
+            ALUM = ${ALUM.contentToString()}
+            ENTREGA = ${ENTREGA.contentToString()}
+            PRUEBA = ${PRUEBA.contentToString()}
+            NO_AUT = ${NO_AUT.contentToString()}
+            EXC_TM = ${EXC_TM.contentToString()}
+            EXC = ${EXC.contentToString()}
+            ERR = ${ERR.contentToString()}
+            NO_METHOD = ${NO_METHOD.contentToString()}
+            NOM_PRACT = ${NOM_PRACT.contentToString()}
+            EJER_PRACT = ${EJER_PRACT.contentToString()}
+            EJER_PUNTOS = ${EJER_PUNTOS.contentToString()}
+            path = $path
+            absPath = $absPath
+            fileName = $fileName
+            alumno = $alumno
+            pc = $pc
+            notaLabTests = $notaLabTests
+            ahora = $ahora
+        """.trimIndent()
+
+    fun toDataString(): String {
+        val language = when (lang) {
+            0 -> "Spanish"
+            1 -> "English"
+            else -> "Unknown"
+        }
+        val scores = buildString {
+            appendLine()
+            EJER_PUNTOS.forEachIndexed { i, e ->
+                appendLine("    (Test ${i + 1}) = $e")
+            }
+            append("    (Total) = $notaLabTests")
+        }
+
+        return """
+            --- Extracted from file ---
+            Language = $language
+            Title(ES) = ${CAP[0]}
+            Title(EN) = ${CAP[1]}
+            Tests count = ${EJER_PRACT.size}
+            Max score = $scores
+            Package = $path
+            Output file name = $fileName
+            
+            --- From system ---
+            Username = $alumno
+            Host = $pc
+            Now = $ahora
+        """.trimIndent()
+    }
 
 }
