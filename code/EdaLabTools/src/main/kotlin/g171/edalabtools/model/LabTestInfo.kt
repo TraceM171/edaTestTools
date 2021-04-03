@@ -137,9 +137,9 @@ data class LabTestInfo(
         val scores = buildString {
             appendLine()
             EJER_PUNTOS.forEachIndexed { i, e ->
-                appendLine("    (Test ${i + 1}) = $e")
+                appendLine("                (Test ${i + 1}) = $e")
             }
-            append("    (Total) = $notaLabTests")
+            append("                (Total) = $notaLabTests")
         }
 
         return """
@@ -151,7 +151,6 @@ data class LabTestInfo(
             Max score = $scores
             Package = $path
             Output file name = $fileName
-            
             --- From system ---
             Username = $alumno
             Host = $pc

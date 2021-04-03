@@ -4,5 +4,5 @@ package g171.edalabtools
 const val VERSION_NAME = "0.8"
 
 // General
-const val RESULT_EDITOR_DELIMITER = "‖"
+const val RESULT_EDITOR_DELIMITER = "▒"
 const val FE_PARSE_MESSAGE = "Error parsing field \"%s\", in file located at \"%s\""

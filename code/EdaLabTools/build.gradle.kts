@@ -11,6 +11,7 @@ repositories {
 
 dependencies {
     testImplementation(kotlin("test-junit"))
+    implementation(kotlin("stdlib-jdk8"))
     implementation("org.benf:cfr:0.151")
     implementation("commons-lang:commons-lang:2.6")
     implementation("com.github.ajalt.clikt:clikt:3.1.0")
