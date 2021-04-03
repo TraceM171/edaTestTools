@@ -1,7 +1,7 @@
 package g171.edalabtools
 
 // Software
-const val VERSION_NAME = "0.8"
+const val VERSION_NAME = "0.8.1"
 
 // General
 const val RESULT_EDITOR_DELIMITER = "▒"
